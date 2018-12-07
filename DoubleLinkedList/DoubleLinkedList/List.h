@@ -30,12 +30,12 @@ class List
 			return prev;
 		}
 
-		void setPrev(Node<T> prev)
+		void setPrev(Node<T> * prev)
 		{
 			this->prev = prev;
 		}
 
-		void setNext(Node<T> next)
+		void setNext(Node<T> * next)
 		{
 			this->next = next;
 		}
@@ -92,9 +92,9 @@ class List
 		ListIter();
 		~ListIter();
 
-		ListIter(Node<T>* p)
+		ListIter(Node<T> * p)
 		{
-			
+			link = p->getLink();
 		}
 
 		ListIter(const ListIter& other)
@@ -119,22 +119,26 @@ class List
 
 		ListIter& operator++()
 		{
-
+			*link = link->getNext()->getLink();
 		}
 
 		ListIter& operator--()
 		{
-
+			*link = link->getPrev()->getLink();
 		}
 
 		ListIter operator++(int)
 		{
-
+			ListIter<T> tmp = *this;
+			*link = link->getNext()->getLink();
+			return tmp;
 		}
 
 		ListIter operator--(int)
 		{
-
+			ListIter<T> tmp = *this;
+			*link = link->getPrev()->getLink();
+			return tmp;
 		}
 
 		friend bool operator==(const ListIter& lhs, const ListIter& rhs)
