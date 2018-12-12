@@ -68,19 +68,19 @@ class List
 			return value;
 		}
 
-		Link<T> getLink()
+		Link<T> * getLink()
 		{
 			return link;
 		}
 
 		void print()
 		{
-			cout << "(n: " << list.getNext() << " | p: " << link.getPrev() << " | v: " << value << ")" << endl;
+			cout << "(n: " << list->getNext() << " | p: " << link->getPrev() << " | v: " << value << ")" << endl;
 		}
 	private:
 		T value;
 
-		Link<T> link;
+		Link<T> * link;
 	};
 
 	template<class T>
@@ -105,6 +105,11 @@ class List
 		ListIter& operator=(const ListIter& other)
 		{
 			
+		}
+
+		Node<T> * next()
+		{
+			return link->next();
 		}
 
 		T & operator*()
@@ -146,8 +151,14 @@ class List
 
 		}
 
-		friend bool operator!=(const ListIter& lhs, const ListIter& rhs)		{
+		friend bool operator!=(const ListIter& lhs, const ListIter& rhs)
+		{
 
+		}
+
+		Link<T> * getLink()
+		{
+			return link;
 		}
 	private:
 		Link<T> * link;
@@ -156,6 +167,80 @@ class List
 public:
 	List();
 	~List();
+
+	size_t size() const noexcept
+	{
+		size_t tmp = 0;
+
+		iterator iter = iterator(head.getNext());
+		while (iter->next() != nullptr)
+		{
+			iter++;
+			tmp++;
+		}
+
+		return tmp;
+	}
+
+	iterator begin() const
+	{
+		return iterator(head.getNext());
+	}
+
+	iterator end() const
+	{
+		iterator iter = iterator(head.getNext());
+		while (iter->next() != nullptr)
+		{
+			iter++;
+		}
+
+		return iter;
+	}
+
+	void pop_back()
+	{
+
+	}
+
+	void pop_front()
+	{
+
+	}
+
+	void push_back(const T& value)
+	{
+		Node<T> * n = (Node<T>*)malloc(sizeof(Node<T>));
+		n->setValue(value);
+
+		n->getLink()->setNext(nullptr);
+
+		iterator iter = iterator(head.getNext());
+		while (iter->next() != nullptr)
+			iter++;
+
+		iter.next()->getLink()->setNext(n);
+		n->getLink()->setPrev(iter.getLink()->getPrev());
+	}
+
+	void push_front(const T& value)
+	{
+		Node<T> * n = (Node<T>*)malloc(sizeof(Node<T>));
+		n->setValue(value);
+		
+		n->getLink()->setNext(*head);
+		n->getLink()->setPrev(nullptr);
+
+		head.setPrev(n);
+
+		head = *n;
+	}
+
+	iterator insert(const iterator& pos, const T& value)	{	}
+	iterator erase(const iterator& pos)
+	{
+
+	}
 private:
 	Link<T> head;
 };
