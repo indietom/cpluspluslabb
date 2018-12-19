@@ -6,6 +6,8 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	List<char> l = List<char>();
+	l.push_front('x');
 	return 0;
 }
 

@@ -46,7 +46,7 @@ class List
 	};
 
 	template<class T>
-	class Node
+	class Node : Link<T>
 	{
 		friend class List<T>;
 	public:
@@ -67,20 +67,13 @@ class List
 		{
 			return value;
 		}
-
-		Link<T> * getLink()
-		{
-			return link;
-		}
-
+		
 		void print()
 		{
-			cout << "(n: " << list->getNext() << " | p: " << link->getPrev() << " | v: " << value << ")" << endl;
+			cout << "(n: " << getNext() << " | p: " << getPrev() << " | v: " << value << ")" << endl;
 		}
 	private:
 		T value;
-
-		Link<T> * link;
 	};
 
 	template<class T>
@@ -99,61 +92,61 @@ class List
 
 		ListIter(const ListIter& other)
 		{
-
+			link = other.getLink();
 		}
 
 		ListIter& operator=(const ListIter& other)
 		{
-			
+			link = other.getLink();
 		}
 
 		Node<T> * next()
 		{
-			return link->next();
+			return link->getNext();
 		}
 
 		T & operator*()
 		{
-
+			return *link;
 		}
 
 		T* operator->()
 		{
-
+			return link;
 		}
 
 		ListIter& operator++()
 		{
-			*link = link->getNext()->getLink();
+			*link = link->getNext();
 		}
 
 		ListIter& operator--()
 		{
-			*link = link->getPrev()->getLink();
+			*link = link->getPrev();
 		}
 
 		ListIter operator++(int)
 		{
 			ListIter<T> tmp = *this;
-			*link = link->getNext()->getLink();
+			*link = link->getNext();
 			return tmp;
 		}
 
 		ListIter operator--(int)
 		{
 			ListIter<T> tmp = *this;
-			*link = link->getPrev()->getLink();
+			*link = link->getPrev();
 			return tmp;
 		}
 
 		friend bool operator==(const ListIter& lhs, const ListIter& rhs)
 		{
-
+			return lhs.getLink() == rhs.getLink();
 		}
 
 		friend bool operator!=(const ListIter& lhs, const ListIter& rhs)
 		{
-
+			return !(lhs == rhs);
 		}
 
 		Link<T> * getLink()
@@ -165,10 +158,17 @@ class List
 	};
 	using iterator = ListIter < T >;
 public:
-	List();
-	~List();
+	List()
+	{
 
-	size_t size() const noexcept
+	}
+
+	~List()
+	{
+
+	}
+
+	size_t size() //const noexcept
 	{
 		size_t tmp = 0;
 
@@ -200,12 +200,17 @@ public:
 
 	void pop_back()
 	{
+		iterator iter = iterator(head.getNext());
+		while (iter->next() != nullptr)
+			iter++;
 
+		iter.getLink()->setNext(nullptr);
 	}
 
 	void pop_front()
 	{
-
+		head.setPrev(head.getPrev());
+		head.setNext(nullptr);
 	}
 
 	void push_back(const T& value)
@@ -213,14 +218,14 @@ public:
 		Node<T> * n = (Node<T>*)malloc(sizeof(Node<T>));
 		n->setValue(value);
 
-		n->getLink()->setNext(nullptr);
+		n->setNext(nullptr);
 
 		iterator iter = iterator(head.getNext());
 		while (iter->next() != nullptr)
 			iter++;
 
 		iter.next()->getLink()->setNext(n);
-		n->getLink()->setPrev(iter.getLink()->getPrev());
+		n->setPrev(iter.getLink()->getPrev());
 	}
 
 	void push_front(const T& value)
@@ -228,18 +233,32 @@ public:
 		Node<T> * n = (Node<T>*)malloc(sizeof(Node<T>));
 		n->setValue(value);
 		
-		n->getLink()->setNext(*head);
-		n->getLink()->setPrev(nullptr);
+		n->setNext(head.getPrev());
+		n->setPrev(nullptr);
 
 		head.setPrev(n);
 
 		head = *n;
 	}
 
-	iterator insert(const iterator& pos, const T& value)	{	}
+	iterator insert(const iterator& pos, const T& value)
+	{
+
+	}
+
 	iterator erase(const iterator& pos)
 	{
 
+	}
+
+	void print()
+	{
+		iterator iter = iterator(head.getNext());
+		while (iter->next() != nullptr)
+		{
+			cout << *(iter->next()) << endl;
+			iter++;
+		}
 	}
 private:
 	Link<T> head;
