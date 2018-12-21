@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <iterator>
 #include <vector>
+#include <algorithm>  
 
 #define DEBUG 1
 
@@ -249,24 +250,39 @@ public:
 		return iterator(items + size);
 	}
 
-	friend bool operator>=(const Vector& lhs, const Vector& other)
+	bool comp1(T t0, T t1)
 	{
-		return (lhs.getSize() >= other.getSize());
+		return t0 < t1;
 	}
 
-	friend bool operator<=(const Vector& lhs, const Vector& other)
+	bool comp2(const T & t0, const T & t1)
 	{
-		return (lhs.getSize() <= other.getSize());
+		return t0 > t1;
 	}
 
-	friend bool operator>(const Vector& lhs, const Vector& other)
+	bool comp3(T t0, T t1)
 	{
-		return (lhs.getSize() > other.getSize());
+		return t0 >= t1;
 	}
 
 	friend bool operator<(const Vector& lhs, const Vector& other)
 	{
-		return (lhs.getSize() < other.getSize());
+		return std::lexicographical_compare(lhs.begin(), lhs.end(), other.begin(), other.end());
+	}
+
+	friend bool operator>(const Vector& lhs, const Vector& other)
+	{
+		return std::lexicographical_compare(other.begin(), other.end(), lhs.begin(), lhs.end());
+	}
+
+	friend bool operator<=(const Vector& lhs, const Vector& other)
+	{
+		return !(other < lhs);
+	}
+
+	friend bool operator>=(const Vector& lhs, const Vector& other)
+	{
+		return !(other > lhs);
 	}
 
 	friend bool operator==(const Vector& lhs, const Vector& other)
