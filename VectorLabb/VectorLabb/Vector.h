@@ -250,21 +250,6 @@ public:
 		return iterator(items + size);
 	}
 
-	bool comp1(T t0, T t1)
-	{
-		return t0 < t1;
-	}
-
-	bool comp2(const T & t0, const T & t1)
-	{
-		return t0 > t1;
-	}
-
-	bool comp3(T t0, T t1)
-	{
-		return t0 >= t1;
-	}
-
 	friend bool operator<(const Vector& lhs, const Vector& other)
 	{
 		return std::lexicographical_compare(lhs.begin(), lhs.end(), other.begin(), other.end());
