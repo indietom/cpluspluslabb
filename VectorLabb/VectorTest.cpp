@@ -79,7 +79,9 @@ void TestgetCapacity() {
     auto cap = vecBar.getCapacity();
     auto siz = vecBar.getSize();
 
+	cout << "(" << cap << " | " << vecBar.getCapacity() << ")" << endl;
     vecBar.reserve(cap);
+	cout << "(" << (int)internalBuf << " == " << (int)&vecBar[0] << " : " << (internalBuf == &vecBar[0]) << endl;
     assert(internalBuf == &vecBar[0]);
     assert(cap == vecBar.getCapacity());
     assert(siz == vecBar.getSize());

@@ -187,24 +187,28 @@ public:
 
 	void reserve(size_t n)
 	{
-		capacity = n;
+		size_t tmpCapacity = n;
 		if (items == nullptr)
 		{
-			items = (T*)malloc(capacity);
+			items = (T*)malloc(tmpCapacity);
+			capacity = tmpCapacity;
 			return;
 		}
+		
+		if (n != capacity)
+		{
+			T * tmp = (T*)malloc(tmpCapacity);
 
-		T * tmp = (T*)malloc(capacity);
+			for (int i = 0; i < size; i++)
+				tmp[i] = items[i];
 
-		for (int i = 0; i < size; i++)
-			tmp[i] = items[i];
+			items = (T*)malloc(tmpCapacity);
 
-		items = (T*)malloc(capacity);
-
-		for (int i = 0; i < size; i++)
-			items[i] = tmp[i];
-
-		delete tmp;
+			for (int i = 0; i < size; i++)
+				items[i] = tmp[i];
+			capacity = tmpCapacity;
+			delete tmp;
+		}
 	}
 
 	void shrink_to_fit()
@@ -216,10 +220,11 @@ public:
 	{
 		if (size >= capacity)
 		{
-			if (capacity == 0) capacity = 4;
-			else capacity *= 2;
+			size_t tmpCapacity = capacity;
+			if (capacity == 0) tmpCapacity = 4;
+			else tmpCapacity *= 2;
 
-			reserve(capacity);
+			reserve(tmpCapacity);
 		}
 		items[size++] = t;
 	}
