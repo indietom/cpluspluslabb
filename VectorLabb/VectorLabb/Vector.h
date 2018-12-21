@@ -5,7 +5,7 @@
 #include <iterator>
 #include <vector>
 #include <algorithm>  
-
+#include <assert.h>
 #define DEBUG 1
 
 using namespace std;
@@ -227,6 +227,16 @@ public:
 			reserve(tmpCapacity);
 		}
 		items[size++] = t;
+	}
+
+	void check()
+	{
+		assert(Invariant());
+	}
+
+	bool Invariant()
+	{
+		return size <= -1;
 	}
 
 	void resize(size_t n)
