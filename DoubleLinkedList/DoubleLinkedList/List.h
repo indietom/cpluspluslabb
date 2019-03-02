@@ -17,8 +17,15 @@ class List
 	{
 		friend class List<T>;
 	public:
-		Link();
-		~Link();
+		Link()
+		{
+
+		}
+
+		~Link()
+		{
+
+		}
 
 		Node<T> * getNext()
 		{
@@ -50,8 +57,15 @@ class List
 	{
 		friend class List<T>;
 	public:
-		Node();
-		~Node();
+		Node()
+		{
+
+		}
+
+		~Node()
+		{
+
+		}
 
 		Node(T value)
 		{
@@ -82,8 +96,15 @@ class List
 	public:
 		using iterator_category = bidirectional_iterator_tag;
 
-		ListIter();
-		~ListIter();
+		ListIter()
+		{
+
+		}
+
+		~ListIter()
+		{
+
+		}
 
 		ListIter(Node<T> * p)
 		{
@@ -254,9 +275,9 @@ public:
 	void print()
 	{
 		iterator iter = iterator(head.getNext());
-		while (iter->next() != nullptr)
+		while (iter.next() != nullptr)
 		{
-			cout << *(iter->next()) << endl;
+			cout << (iter.next()) << endl;
 			iter++;
 		}
 	}
